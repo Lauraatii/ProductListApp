@@ -1,7 +1,7 @@
 # Product List App
 
 ## 🚀 Overview
-Welcome to the **Product List App**! This React Native project displays a large list of products with **infinite scrolling**, **category filtering**, and **smooth performance optimizations**. Whether you're browsing or filtering items, everything loads dynamically to create a seamless experience.
+Welcome to the **Product List App**! This React Native project displays a large list of products with **infinite scrolling**, **category filtering**, and **smooth performance optimizations**. 
 
 ## ✨ Features
 - **Infinite scrolling** – Loads more products as you scroll
