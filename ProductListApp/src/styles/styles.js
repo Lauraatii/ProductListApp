@@ -11,13 +11,13 @@ export default StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 10,
-    color: "#333", 
+    color: "#333",
   },
   dropdown: {
     marginBottom: 10,
   },
   clearButton: {
-    backgroundColor: "#A9B2C3", 
+    backgroundColor: "#A9B2C3",
     padding: 10,
     borderRadius: 8,
     alignItems: "center",
@@ -30,7 +30,7 @@ export default StyleSheet.create({
   },
   productCard: {
     padding: 12,
-    backgroundColor: "#FAFAFA", 
+    backgroundColor: "#FAFAFA",
     marginBottom: 12,
     borderRadius: 10,
     shadowColor: "#000",
@@ -48,11 +48,11 @@ export default StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 5,
-    color: "#444", 
+    color: "#444",
   },
   price: {
     fontSize: 16,
-    color: "#5CB85C", 
+    color: "#5CB85C",
     fontWeight: "600",
   },
   emptyMessage: {
@@ -60,5 +60,12 @@ export default StyleSheet.create({
     fontSize: 18,
     marginTop: 20,
     color: "#888",
+  },
+  errorMessage: {
+    textAlign: "center",
+    fontSize: 18,
+    marginTop: 20,
+    color: "#D9534F",
+    fontWeight: "600",
   },
 });

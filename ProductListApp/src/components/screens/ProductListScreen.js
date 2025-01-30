@@ -22,6 +22,7 @@ const ProductListScreen = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false); 
 
   useEffect(() => {
     // Extracts categories for the dropdown
@@ -32,6 +33,8 @@ const ProductListScreen = () => {
   }, []);
 
   useEffect(() => {
+    if (loading) return; 
+
     try {
       if (category) {
         // Reset pagination and filter products
@@ -41,10 +44,11 @@ const ProductListScreen = () => {
       } else {
         setFilteredProducts(products);
       }
+      setError(false); // Resets error state if filtering succeeds
     } catch (error) {
-      Alert.alert("Error", "Something went wrong while filtering. Please try again.");
+      setError(true);
     }
-  }, [category, products]);
+  }, [category, products, loading]);
 
   const loadMoreProducts = useCallback(() => {
     if (loading) return;
@@ -57,8 +61,9 @@ const ProductListScreen = () => {
 
         setProducts((prev) => [...prev, ...nextProducts]);
         setPage((prevPage) => prevPage + 1);
+        setError(false); // Reset error state if loading succeeds
       } catch (error) {
-        Alert.alert("Error", "Failed to load more products. Please try again.");
+        setError(true);
       }
       setLoading(false);
     }, 1000); // API delay
@@ -93,29 +98,37 @@ const ProductListScreen = () => {
       )}
 
       {/* Product List */}
-      <FlatList
-        data={category ? filteredProducts : products}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.productCard}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-          </View>
-        )}
-        onEndReached={loadMoreProducts}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={loading ? <ActivityIndicator size="large" color="#5CB85C" /> : null}
-        getItemLayout={(data, index) => ({
-          length: 180,
-          offset: 180 * index,
-          index,
-        })}
-        windowSize={10}
-        ListEmptyComponent={() => (
-          <Text style={styles.emptyMessage}>No products found in this category.</Text>
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#555" style={{ marginTop: 20 }} />
+      ) : (
+        <FlatList
+          data={category ? filteredProducts : products}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.productCard}>
+              <Image source={{ uri: item.image }} style={styles.image} />
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.price}>${item.price.toFixed(2)}</Text>
+            </View>
+          )}
+          onEndReached={loadMoreProducts}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={loading ? <ActivityIndicator size="large" color="#555" /> : null}
+          getItemLayout={(data, index) => ({
+            length: 180,
+            offset: 180 * index,
+            index,
+          })}
+          windowSize={10}
+          ListEmptyComponent={() =>
+            !loading && error ? (
+              <Text style={styles.errorMessage}>Something went wrong. Please try again.</Text>
+            ) : !loading && filteredProducts.length === 0 ? (
+              <Text style={styles.emptyMessage}>No products found in this category.</Text>
+            ) : null
+          }
+        />
+      )}
     </View>
   );
 };
